@@ -6,6 +6,7 @@ use Bernard\Consumer;
 use Bernard\Queue;
 use Bernard\Queue\RoundRobinQueue;
 use Bernard\QueueFactory;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * @package Bernard
  */
-class ConsumeCommand extends \Symfony\Component\Console\Command\Command
+class ConsumeCommand extends Command
 {
     protected $consumer;
     protected $queues;
@@ -53,6 +54,8 @@ class ConsumeCommand extends \Symfony\Component\Console\Command\Command
         $queue = $this->getQueue($input->getArgument('queue'));
 
         $this->consumer->consume($queue, $input->getOptions());
+
+        return Command::SUCCESS;
     }
 
     /**
