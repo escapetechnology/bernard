@@ -10,7 +10,7 @@ class Serializer
 {
     protected $aggregate;
 
-    public function __construct(AggregateNormalizer $aggregate = null)
+    public function __construct(?AggregateNormalizer $aggregate = null)
     {
         $this->aggregate = $aggregate ?: $this->createAggregateNormalizer();
     }

@@ -62,7 +62,7 @@ class PersistentFactory implements \Bernard\QueueFactory
      * @return int
      */
     #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return \count($this->driver->listQueues());
     }
