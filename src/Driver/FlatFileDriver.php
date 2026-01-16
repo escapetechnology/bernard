@@ -215,6 +215,11 @@ class FlatFileDriver implements \Bernard\Driver
         $id++;
 
         $filename = sprintf('%d.job', $id);
+
+        if(!is_array($meta)) {
+            $meta = [];
+        }
+
         $meta[$queueName] = $id;
 
         $content = serialize($meta);
