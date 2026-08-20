@@ -2,6 +2,7 @@
 
 namespace Bernard\Normalizer;
 
+use ArrayObject;
 use Assert\Assertion;
 use Bernard\Message\PlainMessage;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,18 +16,18 @@ class PlainMessageNormalizer implements NormalizerInterface, DenormalizerInterfa
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): ArrayObject|array|string|int|float|bool|null
     {
         return [
-            'name' => $object->getName(),
-            'arguments' => $object->all(),
+            'name' => $data->getName(),
+            'arguments' => $data->all(),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         Assertion::notEmptyKey($data, 'name');
         Assertion::keyExists($data, 'arguments');
@@ -38,7 +39,7 @@ class PlainMessageNormalizer implements NormalizerInterface, DenormalizerInterfa
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === 'Bernard\Message\PlainMessage';
     }
@@ -46,8 +47,15 @@ class PlainMessageNormalizer implements NormalizerInterface, DenormalizerInterfa
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof PlainMessage;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            PlainMessage::class => true,
+        ];
     }
 }

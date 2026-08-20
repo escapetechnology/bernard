@@ -2,6 +2,7 @@
 
 namespace Bernard\Normalizer;
 
+use ArrayObject;
 use Assert\Assertion;
 use Bernard\Envelope;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,19 +16,19 @@ class EnvelopeNormalizer extends AbstractAggregateNormalizerAware implements Nor
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize(mixed $data, ?string $format = null, array $context = []): ArrayObject|array|string|int|float|bool|null
     {
         return [
-            'class' => $object->getClass(),
-            'timestamp' => $object->getTimestamp(),
-            'message' => $this->aggregate->normalize($object->getMessage()),
+            'class' => $data->getClass(),
+            'timestamp' => $data->getTimestamp(),
+            'message' => $this->aggregate->normalize($data->getMessage()),
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = [])
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         Assertion::choicesNotEmpty($data, ['message', 'class', 'timestamp']);
 
@@ -44,7 +45,7 @@ class EnvelopeNormalizer extends AbstractAggregateNormalizerAware implements Nor
     /**
      * {@inheritdoc}
      */
-    public function supportsDenormalization($data, $type, $format = null)
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return $type === 'Bernard\Envelope';
     }
@@ -52,9 +53,16 @@ class EnvelopeNormalizer extends AbstractAggregateNormalizerAware implements Nor
     /**
      * {@inheritdoc}
      */
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof Envelope;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            Envelope::class => true,
+        ];
     }
 
     /**
