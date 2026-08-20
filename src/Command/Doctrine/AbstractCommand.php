@@ -32,7 +32,7 @@ abstract class AbstractCommand extends Command
     /**
      * {@inheritDoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $schema = new Schema;
         MessagesSchema::create($schema);

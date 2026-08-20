@@ -49,7 +49,7 @@ class ConsumeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $queue = $this->getQueue($input->getArgument('queue'));
 

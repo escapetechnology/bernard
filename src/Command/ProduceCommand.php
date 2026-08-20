@@ -42,7 +42,7 @@ class ProduceCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $name = $input->getArgument('name');
         $queue = $input->getOption('queue');
